@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import tripReducer from './reducers/tripReducer'
+import stationReducer from './reducers/stationReducer'
 
 const store = configureStore({
   reducer:{
-    trip: tripReducer
+    trip: tripReducer,
+    station: stationReducer
   }
 })
 
