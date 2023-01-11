@@ -3,7 +3,7 @@ import tripServices from '../servises/tripServices'
 
 const tripSlice = createSlice({
   name: 'trip',
-  initialState: [],
+  initialState: { trips: [], totalTrips: 0 },
   reducers:{
     init(state, action) {
       return action.payload

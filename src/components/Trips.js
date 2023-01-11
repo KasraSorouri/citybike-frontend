@@ -18,7 +18,9 @@ const Trips = () => {
   const dispatch = useDispatch()
   useEffect(() => {dispatch(initialize({ page, rowsPerPage }))},[page, rowsPerPage])
 
-  const trips = useSelector(state => state.trip)
+  const trips = useSelector(state => state.trip.trips)
+  const totalTrips = useSelector(state => state.trip.totalTrips)
+
   console.log('trips ->', trips)
 
   const columnHeader = [
@@ -92,7 +94,7 @@ const Trips = () => {
         <TablePagination
           rowsPerPageOptions={[30,50,100]}
           component='div'
-          count={1000}
+          count={totalTrips}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

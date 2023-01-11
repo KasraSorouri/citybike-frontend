@@ -18,7 +18,9 @@ const Stations = () => {
   const dispatch = useDispatch()
   useEffect(() => {dispatch(initialize({ page, rowsPerPage }))},[page, rowsPerPage])
 
-  const stations = useSelector(state => state.station)
+  const stations = useSelector(state => state.station.stations)
+  const totalStations = useSelector(state => state.station.totalStations)
+
   console.log('stations ->', stations)
 
   const columnHeader = [
@@ -86,7 +88,7 @@ const Stations = () => {
         <TablePagination
           rowsPerPageOptions={[30,50,100]}
           component='div'
-          count={1000}
+          count={totalStations}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

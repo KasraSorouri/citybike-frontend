@@ -3,7 +3,7 @@ import stationServices from '../servises/stationServices'
 
 const stationSlice = createSlice({
   name: 'station',
-  initialState: [],
+  initialState: { stations: [], totalStations: 0 },
   reducers:{
     init(state, action) {
       return action.payload
