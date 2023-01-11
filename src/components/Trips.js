@@ -13,8 +13,10 @@ import dateFormat from 'dateformat'
 import { initialize } from '../reducers/tripReducer'
 
 const Trips = () => {
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(30)
   const dispatch = useDispatch()
-  useEffect(() => {dispatch(initialize())},[dispatch])
+  useEffect(() => {dispatch(initialize({ page, rowsPerPage }))},[page, rowsPerPage])
 
   const trips = useSelector(state => state.trip)
   console.log('trips ->', trips)
@@ -28,8 +30,7 @@ const Trips = () => {
     { id: 'distance', lable: 'Distance (Km)', minWidth: 30 }
   ]
 
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(30)
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)

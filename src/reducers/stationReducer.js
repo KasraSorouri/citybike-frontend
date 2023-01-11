@@ -13,9 +13,9 @@ const stationSlice = createSlice({
 
 export const { init } = stationSlice.actions
 
-export const initialize = () => {
+export const initialize = ({ page, rowsPerPage }) => {
   return async dispatch => {
-    const response = await stationServices.getStations({ page:2, qty: 10 })
+    const response = await stationServices.getStations({ page, rowsPerPage })
     dispatch(init(response))
   }
 }

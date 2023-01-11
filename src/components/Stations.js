@@ -12,8 +12,11 @@ import {
   TableRow } from '@mui/material'
 
 const Stations = () => {
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(30)
+
   const dispatch = useDispatch()
-  useEffect(() => {dispatch(initialize())},[dispatch])
+  useEffect(() => {dispatch(initialize({ page, rowsPerPage }))},[page, rowsPerPage])
 
   const stations = useSelector(state => state.station)
   console.log('stations ->', stations)
@@ -25,9 +28,6 @@ const Stations = () => {
     { id: 'stationAddress', lable: 'Station Address', minWidth: 200 },
     { id: 'stationPoint', lable: 'Show on Map', minWidth: 70 },
   ]
-
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(30)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)

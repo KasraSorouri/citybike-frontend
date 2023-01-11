@@ -13,9 +13,9 @@ const tripSlice = createSlice({
 
 export const { init } = tripSlice.actions
 
-export const initialize = () => {
+export const initialize = ({ page, rowsPerPage }) => {
   return async dispatch => {
-    const response = await tripServices.getTrips({ page:2, qty: 10 })
+    const response = await tripServices.getTrips({ page, rowsPerPage })
     dispatch(init(response))
   }
 }
