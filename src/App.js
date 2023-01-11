@@ -8,6 +8,7 @@ import {
 import Stations from './components/Stations'
 import Trips from './components/Trips'
 import Navigation from './components/Navigation'
+import StationInfo from './components/StationInfo'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/trips" element={<Trips  />} />
           <Route path='/stations' element={<Stations />} />
+          <Route path='/station/:sid' element={<StationInfo />} />
         </Routes>
       </Router>
     </Container>

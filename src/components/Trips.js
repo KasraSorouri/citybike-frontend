@@ -14,7 +14,7 @@ import { initialize } from '../reducers/tripReducer'
 
 const Trips = () => {
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(30)
+  const [rowsPerPage, setRowsPerPage] = useState(25)
   const dispatch = useDispatch()
   useEffect(() => {dispatch(initialize({ page, rowsPerPage }))},[page, rowsPerPage])
 
@@ -92,7 +92,7 @@ const Trips = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[30,50,100]}
+          rowsPerPageOptions={[25,50,100]}
           component='div'
           count={totalTrips}
           rowsPerPage={rowsPerPage}

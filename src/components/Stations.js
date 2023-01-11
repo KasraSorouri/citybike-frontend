@@ -10,10 +10,13 @@ import {
   TableHead,
   TablePagination,
   TableRow } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 const Stations = () => {
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(30)
+  const [rowsPerPage, setRowsPerPage] = useState(25)
+
+  const navigate = useNavigate()
 
   const dispatch = useDispatch()
   useEffect(() => {dispatch(initialize({ page, rowsPerPage }))},[page, rowsPerPage])
@@ -27,6 +30,7 @@ const Stations = () => {
     { id: 'stationId', lable: 'Station ID', minWidth: 20 },
     { id: 'stationName', lable: 'Station Name', minWidth: 170 },
     { id: 'stationCapacity', lable: 'Station Capacity', minWidth: 30 },
+    { id: 'stationCity', lable: 'City', minWidth: 50 },
     { id: 'stationAddress', lable: 'Station Address', minWidth: 200 },
     { id: 'stationPoint', lable: 'Show on Map', minWidth: 70 },
   ]
@@ -63,7 +67,7 @@ const Stations = () => {
               { stations.map((station) => {
                 console.log('date ->', )
                 return(
-                  <TableRow hover role='checkbox' tabIndex={-1} key={station.id} onClick={() => console.log('roe clicked ->',station.id) } >
+                  <TableRow hover role='checkbox' tabIndex={-1} key={station.id} onClick={() => navigate(`/station/${station.id}`) } >
                     <TableCell align='center' >
                       {station.stationId}
                     </TableCell>
@@ -72,6 +76,9 @@ const Stations = () => {
                     </TableCell>
                     <TableCell align='center' >
                       {station.capacity}
+                    </TableCell>
+                    <TableCell align='center' >
+                      {station.cityFinnish}
                     </TableCell>
                     <TableCell align='left' >
                       {station.addressFinnish}
@@ -86,7 +93,7 @@ const Stations = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[30,50,100]}
+          rowsPerPageOptions={[25,50,100]}
           component='div'
           count={totalStations}
           rowsPerPage={rowsPerPage}
