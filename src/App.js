@@ -17,7 +17,6 @@ function App() {
     <Container>
       <Router>
         <Navigation />
-        <h1>City bike Application</h1>
         <Routes>
           <Route path="/trips" element={<Trips  />} />
           <Route path='/stations' element={<Stations />} />
