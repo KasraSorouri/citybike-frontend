@@ -37,7 +37,7 @@ const StationInfo = (sid) => {
   }))
 
   const columnHeader = [
-    { id: 'stationName', lable: 'Station Name', minWidth: 80 },
+    { id: 'stationName', lable: 'Station Name', minWidth: 150 },
     { id: 'repetitions', lable: 'Repetitions', minWidth: 5 },
     { id: 'distance', lable: 'Distance (km)', minWidth: 10 },
     { id: 'durations', lable: 'Durations (min)', minWidth: 10 }
@@ -190,7 +190,7 @@ const StationInfo = (sid) => {
                   Avarage distance of round Trips
                 </TableCell>
                 <TableCell align='center' variant="head">
-                  {stationData.returnTrip[0].distance}
+                  {((stationData.returnTrip[0].distance)/1000).toFixed(1)} (km)
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -198,7 +198,7 @@ const StationInfo = (sid) => {
                   Avarage duration of round Trips
                 </TableCell>
                 <TableCell align='center' variant="head">
-                  {stationData.returnTrip[0].duration}
+                  {((stationData.returnTrip[0].duration)/60).toFixed(1)} (min)
                 </TableCell>
               </TableRow>
             </TableBody>
