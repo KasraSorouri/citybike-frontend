@@ -3,12 +3,15 @@ import fileService from '../servises/fileServise'
 import UploadResults from './UploadResults'
 import {
   Button,
+  ToggleButton,
+  ToggleButtonGroup
 }from '@mui/material'
 
 
 const FileUpload = () => {
   const [file, setFile] = useState(null)
   const [result, setResult] = useState(null)
+  const [fileSelect, setFileSelect ] = useState('trips')
   const inputRef = useRef(null)
 
   const tripChangeHandler = (event) => {
@@ -19,9 +22,9 @@ const FileUpload = () => {
 
   const tripUploadHandler = async() => {
     const response = await fileService.uploadTrips(file[0])
+    inputRef.current.value = null
     if (response) {
       setFile(null)
-      inputRef.current.value = null
 
       setResult(response)
     }
@@ -43,41 +46,75 @@ const FileUpload = () => {
     }
   }
 
+  const toggleHandleChange = (event, newSelection) => {
+    setFileSelect(newSelection)
+  }
+
+  const UploadTrips = () => {
+    return(
+      <div>
+        <h3>Please Choose the CSV file to upload TRIPS information.</h3>
+        <input
+          id='tripFile'
+          type='file'
+          ref={inputRef}
+          accept=".csv"
+          onChange={tripChangeHandler}
+          style={{ display: 'none' }}
+        />
+        <label htmlFor='tripFile' style={{ borderStyle:'solid',
+          borderRadius:5,
+          padding: 6,
+          paddingRight:80
+        }}> Click to Upload csv file for Trips</label>
+        <Button onClick={tripUploadHandler} variant="contained" >
+        Upload
+        </Button>
+        <br/>
+      </div>
+    )
+  }
+
+  const UploadStations = () => {
+    return(
+      <div>
+        <h3>Please Choose the CSV file to upload STAIONS information.</h3>
+        <input
+          id='StationFile'
+          type='file'
+          ref={inputRef}
+          accept=".csv"
+          onChange={stationChangeHandler}
+          style={{ display: 'none' }}
+        />
+        <label htmlFor='StationFile' style={{ borderStyle:'solid',
+          borderRadius:5,
+          padding: 6,
+          paddingRight:60
+        }}> Click to Upload csv file for Statoins</label>
+        <Button onClick={stationUploadHandler} variant="contained" >
+        Upload
+        </Button>
+        <UploadResults result={result} />
+      </div>
+    )
+  }
+
   return (
     <div>
-      <label>Trip File</label>
-      <input
-        id='tripFile'
-        type='file'
-        ref={inputRef}
-        accept=".csv"
-        onChange={tripChangeHandler}
-        style={{ 'borderStyle':'solid',
-          'borderRadius':'5px',
-          'padding': '5px',
-        }}
-      />
-      <Button onClick={tripUploadHandler} variant="contained" >
-        Upload
-      </Button>
-      <br/>
-      <br/>
-      <label>Station File</label>
-      <input
-        id='StationFile'
-        type='file'
-        ref={inputRef}
-        accept=".csv"
-        onChange={stationChangeHandler}
-        style={{ 'borderStyle':'solid',
-          'borderRadius':'5px',
-          'padding': '5px',
-        }}
-      />
-      <Button onClick={stationUploadHandler} variant="contained" >
-        Upload
-      </Button>
-      <UploadResults result={result} />
+      <h3>Please choose what information you want to upload.</h3>
+      <ToggleButtonGroup
+        color="primary"
+        value={fileSelect}
+        exclusive
+        onChange={toggleHandleChange}
+        aria-label="Platform"
+      >
+        <ToggleButton value='trips'>Upload Trips</ToggleButton>
+        <ToggleButton value='stations'>Upload Stations</ToggleButton>
+      </ToggleButtonGroup>
+      <br />
+      { fileSelect === 'trips'? <UploadTrips /> : <UploadStations />}
     </div>
   )
 
