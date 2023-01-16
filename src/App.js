@@ -9,6 +9,7 @@ import Stations from './components/Stations'
 import Trips from './components/Trips'
 import Navigation from './components/Navigation'
 import StationInfo from './components/StationInfo'
+import FileUpload from './components/FileUpload'
 
 function App() {
 
@@ -21,6 +22,8 @@ function App() {
           <Route path="/trips" element={<Trips  />} />
           <Route path='/stations' element={<Stations />} />
           <Route path='/station/:sid' element={<StationInfo />} />
+          <Route path='/uploadFiles' element={<FileUpload />} />
+
         </Routes>
       </Router>
     </Container>

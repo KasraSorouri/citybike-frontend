@@ -14,7 +14,7 @@ const Navigation = () => {
         <Button color="inherit" component={Link} to='/stations'>
           Stations
         </Button>
-        <Button color="inherit" component={Link} to='/files'>
+        <Button color="inherit" component={Link} to='/uploadFiles'>
           Upload Data
         </Button>
       </Toolbar>
