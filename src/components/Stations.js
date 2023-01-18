@@ -10,11 +10,13 @@ import {
   TableHead,
   TablePagination,
   TableRow } from '@mui/material'
+
+import TablePaginationActions from './tablePaginationActions'
 import { useNavigate } from 'react-router-dom'
 
 const Stations = () => {
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(25)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
 
   const navigate = useNavigate()
 
@@ -32,7 +34,6 @@ const Stations = () => {
     { id: 'stationCapacity', lable: 'Station Capacity', minWidth: 30 },
     { id: 'stationCity', lable: 'City', minWidth: 50 },
     { id: 'stationAddress', lable: 'Station Address', minWidth: 200 },
-    { id: 'stationPoint', lable: 'Show on Map', minWidth: 70 },
   ]
 
   const handleChangePage = (event, newPage) => {
@@ -46,9 +47,9 @@ const Stations = () => {
 
   return(
     <div>
-      Stations
+      <h2>Station information</h2>
       <Paper>
-        <TableContainer>
+        <TableContainer sx={{ maxHeight: 600 }} >
           <Table stickyHeader aria-label='sticky table'>
             <TableHead>
               <TableRow>
@@ -83,9 +84,6 @@ const Stations = () => {
                     <TableCell align='left' >
                       {station.addressFinnish}
                     </TableCell>
-                    <TableCell align='center' >
-                      {station.location.longtitude}
-                    </TableCell>
                   </TableRow>
                 )
               })}
@@ -93,13 +91,14 @@ const Stations = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[25,50,100]}
+          rowsPerPageOptions={[10,50,100]}
           component='div'
           count={totalStations}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          ActionsComponent={TablePaginationActions}
         />
       </Paper>
     </div>

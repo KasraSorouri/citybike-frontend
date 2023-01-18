@@ -8,20 +8,21 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
-  TableRow } from '@mui/material'
+  TableRow
+} from '@mui/material'
+import TablePaginationActions from './tablePaginationActions'
+
 import dateFormat from 'dateformat'
 import { initialize } from '../reducers/tripReducer'
 
 const Trips = () => {
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(25)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
   const dispatch = useDispatch()
   useEffect(() => {dispatch(initialize({ page, rowsPerPage }))},[page, rowsPerPage])
 
   const trips = useSelector(state => state.trip.trips)
   const totalTrips = useSelector(state => state.trip.totalTrips)
-
-  console.log('trips ->', trips)
 
   const columnHeader = [
     { id: 'departureStation', lable: 'Departure Station', minWidth: 170 },
@@ -31,8 +32,6 @@ const Trips = () => {
     { id: 'duration', lable: 'Duration (min)', minWidth: 30 },
     { id: 'distance', lable: 'Distance (Km)', minWidth: 30 }
   ]
-
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -45,9 +44,9 @@ const Trips = () => {
 
   return(
     <div>
-      Trips
+      <h2>Trips information</h2>
       <Paper>
-        <TableContainer>
+        <TableContainer sx={{ maxHeight: 600 }}>
           <Table stickyHeader aria-label='sticky table'>
             <TableHead>
               <TableRow>
@@ -64,7 +63,6 @@ const Trips = () => {
             </TableHead>
             <TableBody>
               { trips.map((trip) => {
-                console.log('date ->', )
                 return(
                   <TableRow hover role='checkbox' tabIndex={-1} key={trip.id} onClick={() => console.log('roe clicked ->',trip.id) } >
                     <TableCell align='left' >
@@ -92,13 +90,15 @@ const Trips = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[25,50,100]}
+          rowsPerPageOptions={[10,50,100]}
           component='div'
+          colSpan={3}
           count={totalTrips}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          ActionsComponent={TablePaginationActions}
         />
       </Paper>
     </div>
