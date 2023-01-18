@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Map, Marker, ZoomControl  } from 'pigeon-maps'
 import stationServices from '../servises/stationServices'
-import { useLocation } from 'react-router-dom'
 
 import { styled } from '@mui/material/styles'
 import MuiGrid from '@mui/material/Grid'
 import {
   Divider,
+  Autocomplete,
+  TextField,
   Table,
   TableBody,
   TableCell,
@@ -16,17 +17,25 @@ import {
   TableRow } from '@mui/material'
 
 const StationInfo = (sid) => {
-  const { state } = useLocation()
   const stationId = useParams(sid)
+
   const [stationData, setStationData] = useState(null)
+  const [stationList, setStationList] = useState([])
+
+  const navigate = useNavigate()
+  let station
+
   useEffect(() =>  {
-    console.log('station page sid ->', stationId)
-    stationServices.getStationInfo({ stationId })
+    stationServices.getStationInfo(stationId.sid)
       .then((response) => setStationData(response))
-  },[])
-  console.log('Station ->', state.station)
-  console.log('Station data ->', stationData)
-  const station = state.station
+    stationServices.getAllStations()
+      .then((response) => setStationList(response))
+  },[stationId])
+
+  if (stationData){
+    station = stationData.stationInfo
+  }
+
 
   const Grid = styled(MuiGrid)(({ theme }) => ({
     width: '100%',
@@ -208,9 +217,12 @@ const StationInfo = (sid) => {
     )
   }
 
+  const searchHandler = (item) => {
+    const sid = (item.split(',')[1]).toString()
+    navigate(`/station/${sid}`)
+  }
 
-
-  if (!stationData) {
+  if (!(stationData && station)) {
     return null
   }
 
@@ -218,6 +230,27 @@ const StationInfo = (sid) => {
     <div>
       <h1>Station information</h1>
       <h2>&nbsp; Station name: {station.nameFinnish} ({station.nameSwedish})</h2>
+      <Autocomplete
+        freeSolo
+        id='search'
+        disableClearable
+        options={stationList.map((option) => `${option.name},${option.id}`)}
+        onChange={(event, newInputValue) => {
+          searchHandler(newInputValue)
+        }}
+        renderInput={(params) => {
+          return(
+            <TextField
+              {...params}
+              label="Search input"
+              InputProps={{
+                ...params.InputProps,
+                type: 'search',
+              }}
+            />
+
+          )}}
+      />
       <Grid container>
         <Grid item xs>
           <Origins />

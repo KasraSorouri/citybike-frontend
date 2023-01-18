@@ -66,9 +66,8 @@ const Stations = () => {
             </TableHead>
             <TableBody>
               { stations.map((station) => {
-                console.log('date ->', )
                 return(
-                  <TableRow hover role='checkbox' tabIndex={-1} key={station.id} onClick={() => navigate(`/station/${station.id}` ,{ state:  { station } }) } >
+                  <TableRow hover role='checkbox' tabIndex={-1} key={station.id} onClick={() => navigate(`/station/${station.stationId}`) } >
                     <TableCell align='center' >
                       {station.stationId}
                     </TableCell>

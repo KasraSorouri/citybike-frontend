@@ -7,13 +7,18 @@ const getStations = async({ page, rowsPerPage }) => {
   return response.data
 }
 
-const getStationInfo = async({ stationId }) => {
-  console.log('station id ->',  stationId.sid )
-  const response = await axios.get(`${baseUri}/${stationId.sid}`)
+const getAllStations = async() => {
+  const response = await axios.get(baseUri)
+  return response.data
+}
+
+const getStationInfo = async(stationId) => {
+  const response = await axios.get(`${baseUri}/${stationId}`)
   return response.data
 }
 
 export default {
   getStations,
-  getStationInfo
+  getStationInfo,
+  getAllStations
 }

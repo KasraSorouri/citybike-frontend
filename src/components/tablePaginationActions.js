@@ -8,7 +8,6 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
 
 const TablePaginationActions = (props) => {
-  console.log('handel pagination', props)
   const { count, page, rowsPerPage, onPageChange } = props
 
   const handleFirstPageButtonClick = (event) => {

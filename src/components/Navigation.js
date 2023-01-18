@@ -4,7 +4,7 @@ import { AppBar, Toolbar, Button, IconButton } from '@mui/material'
 
 const Navigation = () => {
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="menu">
         </IconButton>
