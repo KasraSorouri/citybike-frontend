@@ -10,6 +10,8 @@ import {
   Autocomplete,
   TextField,
   Table,
+  Box,
+  Stack,
   TableBody,
   TableCell,
   TableContainer,
@@ -222,44 +224,61 @@ const StationInfo = (sid) => {
     navigate(`/station/${sid}`)
   }
 
+  const SearchStation = () => {
+    return(
+      <Stack spacing={2} sx={{ width: 300 }}>
+        <Autocomplete
+          freeSolo
+          id='search'
+          disableClearable
+          options={stationList.map((option) => `${option.name},${option.id}`)}
+          onChange={(event, newInputValue) => {
+            searchHandler(newInputValue)
+          }}
+          renderInput={(params) => {
+            return(
+              <TextField
+                {...params}
+                label="Search input"
+                InputProps={{
+                  ...params.InputProps,
+                  type: 'search',
+                }}
+              />
+
+            )}}
+        />
+
+      </Stack>
+
+    )
+  }
+
   if (!(stationData && station)) {
     return null
   }
 
   return(
-    <div>
+    <Box>
       <h1>Station information</h1>
-      <h2>&nbsp; Station name: {station.nameFinnish} ({station.nameSwedish})</h2>
-      <Autocomplete
-        freeSolo
-        id='search'
-        disableClearable
-        options={stationList.map((option) => `${option.name},${option.id}`)}
-        onChange={(event, newInputValue) => {
-          searchHandler(newInputValue)
-        }}
-        renderInput={(params) => {
-          return(
-            <TextField
-              {...params}
-              label="Search input"
-              InputProps={{
-                ...params.InputProps,
-                type: 'search',
-              }}
-            />
+      <Grid container spacing={3}>
+        <Grid xs={8} >
+          <h2>&nbsp; &nbsp; &nbsp; Station name: {station.nameFinnish} ({station.nameSwedish})</h2>
+        </Grid>
+        <Grid xs={4}>
+          <SearchStation  />
+        </Grid>
+      </Grid>
 
-          )}}
-      />
-      <Grid container>
-        <Grid item xs>
+      <Grid container spacing={3}>
+        <Grid item sm>
           <Origins />
         </Grid>
         <Divider orientation="vertical" flexItem>
           <h2>{station.nameFinnish}</h2>
           <p>Station</p>
         </Divider>
-        <Grid item xs>
+        <Grid item sm>
           <Destinations />
         </Grid>
       </Grid>
@@ -282,7 +301,7 @@ const StationInfo = (sid) => {
           </Map>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   )
 }
 

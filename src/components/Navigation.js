@@ -4,7 +4,7 @@ import { AppBar, Toolbar, Button, IconButton } from '@mui/material'
 
 const Navigation = () => {
   return (
-    <AppBar position="fixed">
+    <AppBar position='static' >
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="menu">
         </IconButton>
@@ -13,6 +13,9 @@ const Navigation = () => {
         </Button>
         <Button color="inherit" component={Link} to='/stations'>
           Stations
+        </Button>
+        <Button color="inherit" component={Link} to='/station/100'>
+          StationInfo
         </Button>
         <Button color="inherit" component={Link} to='/uploadFiles'>
           Upload Data
