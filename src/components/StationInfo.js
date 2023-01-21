@@ -245,7 +245,6 @@ const StationInfo = (sid) => {
                   type: 'search',
                 }}
               />
-
             )}}
         />
 
