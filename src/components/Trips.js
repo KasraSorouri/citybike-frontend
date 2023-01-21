@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import {
   Paper,
   Table,
@@ -11,20 +11,23 @@ import {
   TableRow
 } from '@mui/material'
 import TablePaginationActions from './tablePaginationActions'
-
 import dateFormat from 'dateformat'
-import { initialize } from '../reducers/tripReducer'
 import TripFilter from './TripFilter'
 import Togglable from './Togglable'
+import tripServices from '../servises/tripServices'
 
-const Trips = () => {
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
-  const dispatch = useDispatch()
-  useEffect(() => {dispatch(initialize({ page, rowsPerPage }))},[page, rowsPerPage])
 
-  const trips = useSelector(state => state.trip.trips)
-  const totalTrips = useSelector(state => state.trip.totalTrips)
+const TripfilterPage = () => {
+  const filterData = useLocation()
+  const [ page, setPage ] = useState(0)
+  const [ rowsPerPage, setRowsPerPage ] = useState(10)
+  const [ trips, setTrips ] = useState()
+  const [ totalTrips, setTotalTrips ] = useState()
+
+  useEffect(() => {tripServices.getFilterdTrips({ page, rowsPerPage, filterData })
+    .then(response => {setTrips(response.trips)
+      setTotalTrips(response.totalTrips)
+    })},[page, rowsPerPage, filterData])
 
   const columnHeader = [
     { id: 'departureStation', lable: 'Departure Station', minWidth: 170 },
@@ -35,6 +38,11 @@ const Trips = () => {
     { id: 'distance', lable: 'Distance (Km)', minWidth: 30 }
   ]
 
+  const filterHandler = async() => {
+    setPage(0)
+  }
+
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
   }
@@ -44,11 +52,15 @@ const Trips = () => {
     setPage(0)
   }
 
+  if (!trips){
+    return null
+  }
+
   return(
     <div>
       <h2>Trips information</h2>
       <Togglable buttonLabel='Filter'>
-        <TripFilter />
+        <TripFilter filterHandler={filterHandler} />
       </Togglable>
       <Paper>
         <TableContainer sx={{ maxHeight: 600 }}>
@@ -110,4 +122,4 @@ const Trips = () => {
   )
 }
 
-export default Trips
+export default TripfilterPage

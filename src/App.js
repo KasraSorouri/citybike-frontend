@@ -5,13 +5,12 @@ import {
   Route
 } from 'react-router-dom'
 import Stations from './components/Stations'
-import Trips from './components/Trips'
+//import Trips from './components/Trips'
 import Navigation from './components/Navigation'
 import StationInfo from './components/StationInfo'
 import FileUpload from './components/FileUpload'
 import { Container } from '@mui/material'
-import TripFilter from './components/TripFilter'
-import TripsFilterPage from './components/TripFilterPage'
+import Trips from './components/Trips'
 
 function App() {
 
@@ -21,12 +20,10 @@ function App() {
         <Router>
           <Navigation />
           <Routes>
-            <Route path="/trips" element={<Trips  />} />
-            <Route path="/trips/filter" element={<TripsFilterPage  />} />
+            <Route path='/trips' element={<Trips />} />
             <Route path='/stations' element={<Stations />} />
             <Route path='/station/:sid' element={<StationInfo />} />
             <Route path='/uploadFiles' element={<FileUpload />} />
-            <Route path='/filter' element={<TripFilter />} />
           </Routes>
         </Router>
       </Container>
