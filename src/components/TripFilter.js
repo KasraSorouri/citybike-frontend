@@ -9,7 +9,9 @@ import {
   TextField,
   InputAdornment,
   Button,
-  MenuItem
+  MenuItem,
+  Stack,
+  Grid
 } from '@mui/material'
 
 import stationServices from '../servises/stationServices'
@@ -68,7 +70,7 @@ const TripFilter = ({ filterHandler }) => {
     filter.end ? params.end = theDayAfter.toISOString() : params.end = 'null'
     filterHandler()
     navigate({
-      pathname: '/trips/filter',
+      pathname: '/trips',
       search: `?${createSearchParams(params)}`
     })
   }
@@ -77,11 +79,11 @@ const TripFilter = ({ filterHandler }) => {
     setDates({ start: null , end: null })
     setInputs(initialFilterPrameter)
     navigate({
-      pathname: '/trips/filter',
+      pathname: '/trips',
       search: `?${createSearchParams({})}`
     })
   }
-  console.log('inputs ->', inputs)
+  //console.log('inputs ->', inputs)
 
   return(
     <div>
@@ -94,113 +96,120 @@ const TripFilter = ({ filterHandler }) => {
         autoComplete='off'
         flex={6}
       >
-        <div>
-          <TextField
-            id='originStation'
-            label='Origin Station'
-            select
-            defaultValue={''}
-            value={inputs.originStation}
-            name='originStation'
-            onChange={ event => handleChange(event)}
-          >
-            {stationList.map((option) => (
-              <MenuItem key={option.id} value={ option.id } >
-                {`${option.name},${option.id}`}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            id='destinationStation'
-            label='Destination Station'
-            select
-            defaultValue={''}
-            value={inputs.destinationStation}
-            name='destinationStation'
-            onChange={ event => handleChange(event)}
-          >
-            {stationList.map((option) => (
-              <MenuItem key={option.id} value={ option.id } >
-                {`${option.name},${option.id}`}
-              </MenuItem>
-            ))}
-          </TextField>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              label='Trip Start'
-              name='startDate'
-              minDate={parameter.earliest}
-              maxDate={parameter.latest}
-              value={dates.start}
-              onChange={handleStartDate}
-              renderInput={(params) => <TextField {...params} sx={{ maxWidth: 150 }}/>
-              }
-            />
-            <DatePicker
-              label='Trip End'
-              name='EndDate'
-              minDate={parameter.earliest}
-              maxDate={parameter.latest}
-              value={dates.end}
-              onChange={handleEndDate}
-              renderInput={(params) => <TextField {...params}  sx={{ maxWidth: 150 }}/>
-              }
-            />
-          </LocalizationProvider>
-          <Box>
+        <Grid container>
+          <Grid>
+            <TextField
+              id='originStation'
+              label='Origin Station'
+              select
+              defaultValue={''}
+              value={inputs.originStation}
+              name='originStation'
+              onChange={ event => handleChange(event)}
+            >
+              {stationList.map((option) => (
+                <MenuItem key={option.id} value={ option.id } >
+                  {`${option.name},${option.id}`}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              id='destinationStation'
+              label='Destination Station'
+              select
+              defaultValue={''}
+              value={inputs.destinationStation}
+              name='destinationStation'
+              onChange={ event => handleChange(event)}
+            >
+              {stationList.map((option) => (
+                <MenuItem key={option.id} value={ option.id } >
+                  {`${option.name},${option.id}`}
+                </MenuItem>
+              ))}
+            </TextField>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label='Trip Start'
+                name='startDate'
+                minDate={parameter.earliest}
+                maxDate={parameter.latest}
+                value={dates.start}
+                onChange={handleStartDate}
+                renderInput={(params) => <TextField {...params} sx={{ maxWidth: 150 }}/>
+                }
+              />
+              <DatePicker
+                label='Trip End'
+                name='EndDate'
+                minDate={parameter.earliest}
+                maxDate={parameter.latest}
+                value={dates.end}
+                onChange={handleEndDate}
+                renderInput={(params) => <TextField {...params}  sx={{ maxWidth: 150 }}/>
+                }
+              />
+            </LocalizationProvider>
+            <Box>
             Duration between
-            <TextField
-              id='durationFrom'
-              label='Duration >='
-              name='durationFrom'
-              value={inputs.durationFrom}
-              sx={{ maxWidth: 80 }}
-              onChange={ event => handleChange(event)}
-              InputProps={{
-                startAdornment: <InputAdornment position='start'>&#62;=</InputAdornment>,
-              }}
-            />
-            <TextField
-              id='durationTo'
-              label='Duration <='
-              name='durationTo'
-              value={inputs.durationTo}
-              sx={{ maxWidth: 80 }}
-              onChange={ event => handleChange(event)}
-              InputProps={{
-                startAdornment: <InputAdornment position='start'>&#60;=</InputAdornment>,
-              }}
-            />
+              <TextField
+                id='durationFrom'
+                label='Duration >='
+                name='durationFrom'
+                value={inputs.durationFrom}
+                sx={{ maxWidth: 80 }}
+                onChange={ event => handleChange(event)}
+                InputProps={{
+                  startAdornment: <InputAdornment position='start'>&#62;=</InputAdornment>,
+                }}
+              />
+              <TextField
+                id='durationTo'
+                label='Duration <='
+                name='durationTo'
+                value={inputs.durationTo}
+                sx={{ maxWidth: 80 }}
+                onChange={ event => handleChange(event)}
+                InputProps={{
+                  startAdornment: <InputAdornment position='start'>&#60;=</InputAdornment>,
+                }}
+              />
             &nbsp; &nbsp; &nbsp; Distance between
-            <TextField
-              id='distanceFrom'
-              label='Distance >='
-              name='distanceFrom'
-              value={inputs.distanceFrom}
-              sx={{ maxWidth: 80 }}
-              onChange={ event => handleChange(event)}
-              InputProps={{
-                startAdornment: <InputAdornment position='start'>&#62;=</InputAdornment>,
-              }}
-            />
+              <TextField
+                id='distanceFrom'
+                label='Distance >='
+                name='distanceFrom'
+                value={inputs.distanceFrom}
+                sx={{ maxWidth: 80 }}
+                onChange={ event => handleChange(event)}
+                InputProps={{
+                  startAdornment: <InputAdornment position='start'>&#62;=</InputAdornment>,
+                }}
+              />
             and
-            <TextField
-              id='distanceTo'
-              label='Distance <='
-              name='distanceTo'
-              value={inputs.distanceTo}
-              sx={{ maxWidth: 80 }}
-              onChange={ event => handleChange(event)}
-              InputProps={{
-                startAdornment: <InputAdornment position='start'>&#60;=</InputAdornment>,
-              }}
-            />
-            <Button variant='contained' size='large' sx={{ mt: 1, height:50 }}  onClick={handleSubmit}>Filter</Button>
-            <Button variant='contained' size='large' sx={{ mt: 1, height:50 }}  onClick={handleReset}>Reset</Button>
-          </Box>
-        </div>
+              <TextField
+                id='distanceTo'
+                label='Distance <='
+                name='distanceTo'
+                value={inputs.distanceTo}
+                sx={{ maxWidth: 80 }}
+                onChange={ event => handleChange(event)}
+                InputProps={{
+                  startAdornment: <InputAdornment position='start'>&#60;=</InputAdornment>,
+                }}
+              />
+            </Box>
+          </Grid>
+          <Grid>
+            <Stack spacing={2} flex >
+              <Button variant='contained' size='large' sx={{ mt: 1, height:50 }}  onClick={handleSubmit}>Filter</Button>
+              <Button variant='contained' size='large' sx={{ mt: 1, height:50 }}  onClick={handleReset}>Reset</Button>
+            </Stack>
+          </Grid>
+        </Grid>
       </Box>
     </div>
+
   )
 }
 export default TripFilter
