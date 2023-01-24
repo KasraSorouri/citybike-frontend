@@ -1,9 +1,9 @@
 import React , { useState, useEffect } from 'react'
 import { useNavigate, createSearchParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-
 import {
   Box,
   TextField,
@@ -11,14 +11,17 @@ import {
   Button,
   MenuItem,
   Stack,
-  Grid
+  Grid,
+  InputLabel
 } from '@mui/material'
 
-import stationServices from '../servises/stationServices'
 import parameterServise from '../servises/parameter'
+import { initialize } from '../reducers/stationReducer'
+
 
 const TripFilter = ({ filterHandler }) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const initialFilterPrameter = {
     originStation: '',
@@ -31,15 +34,19 @@ const TripFilter = ({ filterHandler }) => {
 
   const [inputs, setInputs] = useState(initialFilterPrameter)
   const [dates, setDates] = useState({ start: null , end: null })
-  const [stationList, setStationList] = useState([])
   const [parameter, setParameter]= useState([])
 
   useEffect(() =>  {
-    stationServices.getAllStations()
-      .then((response) => setStationList(response))
     parameterServise.getParameter()
       .then((response) => setParameter(response))
+    dispatch(initialize())
   },[])
+
+  const stationList = useSelector(state => state.station.map(station => ({
+    id: station.id,
+    value: `${station.stationId}`,
+    name: `${station.nameFinnish},${station.stationId}`
+  })))
 
   const handleChange = (event) => {
     const name = event.target.name
@@ -83,7 +90,6 @@ const TripFilter = ({ filterHandler }) => {
       search: `?${createSearchParams({})}`
     })
   }
-  //console.log('inputs ->', inputs)
 
   return(
     <div>
@@ -108,8 +114,8 @@ const TripFilter = ({ filterHandler }) => {
               onChange={ event => handleChange(event)}
             >
               {stationList.map((option) => (
-                <MenuItem key={option.id} value={ option.id } >
-                  {`${option.name},${option.id}`}
+                <MenuItem key={option.id} value={ option.value } >
+                  {`${option.name}`}
                 </MenuItem>
               ))}
             </TextField>
@@ -123,8 +129,8 @@ const TripFilter = ({ filterHandler }) => {
               onChange={ event => handleChange(event)}
             >
               {stationList.map((option) => (
-                <MenuItem key={option.id} value={ option.id } >
-                  {`${option.name},${option.id}`}
+                <MenuItem key={option.id} value={ option.value } >
+                  {`${option.name}`}
                 </MenuItem>
               ))}
             </TextField>
@@ -150,8 +156,8 @@ const TripFilter = ({ filterHandler }) => {
                 }
               />
             </LocalizationProvider>
-            <Box>
-            Duration between
+            <Stack direction={'row'} flex justifyContent="space-between" >
+              <InputLabel sx={{ marginTop: 3 }}>Duration between</InputLabel>
               <TextField
                 id='durationFrom'
                 label='Duration >='
@@ -163,6 +169,7 @@ const TripFilter = ({ filterHandler }) => {
                   startAdornment: <InputAdornment position='start'>&#62;=</InputAdornment>,
                 }}
               />
+              <InputLabel sx={{ marginTop: 3 }}>and</InputLabel>
               <TextField
                 id='durationTo'
                 label='Duration <='
@@ -174,7 +181,8 @@ const TripFilter = ({ filterHandler }) => {
                   startAdornment: <InputAdornment position='start'>&#60;=</InputAdornment>,
                 }}
               />
-            &nbsp; &nbsp; &nbsp; Distance between
+              <p>&nbsp;</p>
+              <InputLabel sx={{ marginTop: 3 }}>distance between</InputLabel>
               <TextField
                 id='distanceFrom'
                 label='Distance >='
@@ -186,7 +194,7 @@ const TripFilter = ({ filterHandler }) => {
                   startAdornment: <InputAdornment position='start'>&#62;=</InputAdornment>,
                 }}
               />
-            and
+              <InputLabel sx={{ marginTop: 3 }}>and</InputLabel>
               <TextField
                 id='distanceTo'
                 label='Distance <='
@@ -198,10 +206,10 @@ const TripFilter = ({ filterHandler }) => {
                   startAdornment: <InputAdornment position='start'>&#60;=</InputAdornment>,
                 }}
               />
-            </Box>
+            </Stack>
           </Grid>
           <Grid>
-            <Stack spacing={2} flex >
+            <Stack spacing={3} flex >
               <Button variant='contained' size='large' sx={{ mt: 1, height:50 }}  onClick={handleSubmit}>Filter</Button>
               <Button variant='contained' size='large' sx={{ mt: 1, height:50 }}  onClick={handleReset}>Reset</Button>
             </Stack>

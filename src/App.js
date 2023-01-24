@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div>
-      <Container>
+      <Container  maxWidth='xl'>
         <Router>
           <Navigation />
           <Routes>

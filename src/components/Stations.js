@@ -17,16 +17,27 @@ import { useNavigate } from 'react-router-dom'
 const Stations = () => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [stationsToShow, setStationsToShow] = useState([])
 
   const navigate = useNavigate()
-
   const dispatch = useDispatch()
-  useEffect(() => {dispatch(initialize({ page, rowsPerPage }))},[page, rowsPerPage])
 
-  const stations = useSelector(state => state.station.stations)
-  const totalStations = useSelector(state => state.station.totalStations)
+  useEffect(() => {
+    dispatch(initialize())
+  },[])
 
-  console.log('stations ->', stations)
+  const stations = useSelector(state => state.station)
+
+  useEffect(() => {
+    const LastStationIndex = (page + 1 ) * rowsPerPage
+    const firstStationIndex = LastStationIndex - rowsPerPage
+    setStationsToShow(stations.slice(firstStationIndex, LastStationIndex))
+  }, [page, rowsPerPage, stations])
+
+
+  //console.log('station length', stations.length)
+  const totalStations = stations ? stations.length : 0
+
 
   const columnHeader = [
     { id: 'stationId', lable: 'Station ID', minWidth: 20 },
@@ -65,9 +76,9 @@ const Stations = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              { stations.map((station) => {
+              { stationsToShow.map((station) => {
                 return(
-                  <TableRow hover role='checkbox' tabIndex={-1} key={station.id} onClick={() => navigate(`/station/${station.stationId}`) } >
+                  <TableRow hover role='checkbox' tabIndex={-1} key={station.id} onClick={() => navigate(`/station/${station.id}`) } >
                     <TableCell align='center' >
                       {station.stationId}
                     </TableCell>

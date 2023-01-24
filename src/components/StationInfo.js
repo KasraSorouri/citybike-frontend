@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import { Map, Marker, ZoomControl  } from 'pigeon-maps'
+import { initialize } from '../reducers/stationReducer'
 import stationServices from '../servises/stationServices'
 
 import { styled } from '@mui/material/styles'
@@ -18,26 +20,32 @@ import {
   TableHead,
   TableRow } from '@mui/material'
 
-const StationInfo = (sid) => {
-  const stationId = useParams(sid)
+const StationInfo = (id) => {
+  const sid = useParams(id).sid
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const [stationData, setStationData] = useState(null)
-  const [stationList, setStationList] = useState([])
 
-  const navigate = useNavigate()
-  let station
+  const station = useSelector(state => state.station.find(station => station.id === sid))
+  const stations = useSelector(state => state.station)
+  const stationList = stations.map(station => `${station.nameFinnish},${station.stationId}`)
+
+  useEffect(() => {
+    dispatch(initialize())
+    if (station) {
+      stationServices.getStationInfo(station.stationId)
+        .then((response) => setStationData(response))
+    }
+  },[sid])
 
   useEffect(() =>  {
-    stationServices.getStationInfo(stationId.sid)
-      .then((response) => setStationData(response))
-    stationServices.getAllStations()
-      .then((response) => setStationList(response))
-  },[stationId])
-
-  if (stationData){
-    station = stationData.stationInfo
-  }
-
+    if (station) {
+      stationServices.getStationInfo(station.stationId)
+        .then((response) => setStationData(response))
+    }
+  },[station])
 
   const Grid = styled(MuiGrid)(({ theme }) => ({
     width: '100%',
@@ -62,7 +70,8 @@ const StationInfo = (sid) => {
             <TableHead>
               <TableRow>
                 <TableCell align='center' colSpan={4} >
-                  Origins with the most repetitions                </TableCell>
+                  Origins with the most repetitions
+                </TableCell>
               </TableRow>
               <TableRow>
                 {columnHeader.map((column) => (
@@ -220,7 +229,8 @@ const StationInfo = (sid) => {
   }
 
   const searchHandler = (item) => {
-    const sid = (item.split(',')[1]).toString()
+    const stationId = (item.split(',')[1]).toString()
+    const sid  = stations.find(station => station.stationId === `${stationId}`).id
     navigate(`/station/${sid}`)
   }
 
@@ -231,7 +241,7 @@ const StationInfo = (sid) => {
           freeSolo
           id='search'
           disableClearable
-          options={stationList.map((option) => `${option.name},${option.id}`)}
+          options={stationList}
           onChange={(event, newInputValue) => {
             searchHandler(newInputValue)
           }}
@@ -261,10 +271,10 @@ const StationInfo = (sid) => {
     <Box>
       <h1>Station information</h1>
       <Grid container spacing={3}>
-        <Grid xs={8} >
+        <Grid>
           <h2>&nbsp; &nbsp; &nbsp; Station name: {station.nameFinnish} ({station.nameSwedish})</h2>
         </Grid>
-        <Grid xs={4}>
+        <Grid>
           <SearchStation  />
         </Grid>
       </Grid>

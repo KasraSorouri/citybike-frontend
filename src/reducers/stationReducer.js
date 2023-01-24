@@ -3,7 +3,7 @@ import stationServices from '../servises/stationServices'
 
 const stationSlice = createSlice({
   name: 'station',
-  initialState: { stations: [], totalStations: 0 },
+  initialState: [],
   reducers:{
     init(state, action) {
       return action.payload
@@ -13,9 +13,9 @@ const stationSlice = createSlice({
 
 export const { init } = stationSlice.actions
 
-export const initialize = ({ page, rowsPerPage }) => {
+export const initialize = () => {
   return async dispatch => {
-    const response = await stationServices.getStations({ page, rowsPerPage })
+    const response = await stationServices.getStations()
     dispatch(init(response))
   }
 }
