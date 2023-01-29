@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+# About
+This is a client side of basic app for showing bike trips and some statistics about bike stations. It was done based on a pre-assignment challenge from Solita, and Solita supplied the journey and station data.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+To make the application working, you also need a backend server, which you can clone: 
 
-## Available Scripts
+```
+> git clone https://github.com/KasraSorouri/cityBike
+```
 
-In the project directory, you can run:
+# Frontend
+ Frontend is based on React.JS and Redux and MaterialUI. According to Mui the supported browsers listed in below table.
 
-### `npm start`
+## Prerequisite 
+You need to have Node 18.12.1 and npm installed on your machine.
+The versions which been mentioned above are based on the one I have on my personal computer.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Run
+To run the app, you can use 
+```
+> npm start 
+```
+if everything goes well the app start on port 3000
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Features
+The app consists of 4 pages. Which can be navigated to by the App bar top menu.
 
-### `npm test`
+### Trips:
+It shows all paginated trips. You can filter the trips based on stations, time frame of the event, min and max duration and distance. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Stations:
+It shows paginated all stations, their address, their capacity.
+If you click on a station you navigate to the station info page. 
 
-### `npm run build`
+### Station Info:
+In this page a detail information about one station and some important statistics are displayed.
+Addition to the address and map of the station, the top 5 most Origins and destinations, average of duration and distance and round trip which the dictation is the same station and displayed. 
+The station can be chosen directly on this page as well, by the selecting a station on the top corner input. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Uploading the new file
+  In upload page you should choose what type of data you are going to update? ( trips or stations) then you could select your file and you can deactivate duplication check option.   By deactivating the duplication check option the data stores on database faster but there is the risk of duplicate data which decrease the validity of statistic reports. 
