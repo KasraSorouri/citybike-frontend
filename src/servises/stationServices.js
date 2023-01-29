@@ -8,8 +8,12 @@ const getStations = async() => {
 }
 
 const getStationInfo = async(stationId) => {
-  const response = await axios.get(`${baseUri}/${stationId}`)
-  return response.data
+  try {
+    const response = await axios.get(`${baseUri}/${stationId}`)
+    return response.data
+  } catch (e){
+    console.log('error:', e.message)
+  }
 }
 
 export default {

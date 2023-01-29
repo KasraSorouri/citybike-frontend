@@ -264,7 +264,13 @@ const StationInfo = (id) => {
   }
 
   if (!(stationData && station)) {
-    return null
+    return(
+      <div>
+        <p>The station not found! </p>
+        <SearchStation />
+      </div>
+
+    )
   }
 
   return(

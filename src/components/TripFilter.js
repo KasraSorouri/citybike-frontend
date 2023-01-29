@@ -1,5 +1,4 @@
 import React , { useState, useEffect } from 'react'
-import { useNavigate, createSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
@@ -17,10 +16,10 @@ import {
 
 import parameterServise from '../servises/parameter'
 import { initialize } from '../reducers/stationReducer'
+import { resetFilter, setFilter } from '../reducers/filterReducer'
 
 
 const TripFilter = ({ filterHandler }) => {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const initialFilterPrameter = {
@@ -30,6 +29,8 @@ const TripFilter = ({ filterHandler }) => {
     durationTo: '',
     distanceFrom: '',
     distanceTo: '',
+    start: '',
+    end: ''
   }
 
   const [inputs, setInputs] = useState(initialFilterPrameter)
@@ -62,33 +63,17 @@ const TripFilter = ({ filterHandler }) => {
   }
 
   const handleSubmit = (event) => {
-    const filter = { ...inputs, 'start': dates.start, 'end': dates.end }
     event.preventDefault()
-    let params = {}
-    filter.originStation ? params.originStation = filter.originStation : params.originStation = 'null'
-    filter.destinationStation ? params.destinationStation = filter.destinationStation : params.destinationStation = 'null'
-    filter.durationFrom ? params.durationFrom = filter.durationFrom : params.durationFrom = 'null'
-    filter.durationTo ? params.durationTo = filter.durationTo : params.durationTo = 'null'
-    filter.distanceFrom ? params.distanceFrom = filter.distanceFrom : params.distanceFrom = 'null'
-    filter.distanceTo ? params.distanceTo = filter.distanceTo : params.distanceTo = 'null'
-    filter.start ? params.start = filter.start.toISOString() : params.start = 'null'
-    const theDayAfter = new Date(filter.end)
-    theDayAfter.setDate(theDayAfter.getDate()+1)
-    filter.end ? params.end = theDayAfter.toISOString() : params.end = 'null'
+    const filter = { ...inputs, 'start': dates.start, 'end': dates.end }
+    dispatch(setFilter(filter))
     filterHandler()
-    navigate({
-      pathname: '/trips',
-      search: `?${createSearchParams(params)}`
-    })
   }
 
   const handleReset = () => {
+    dispatch(resetFilter())
     setDates({ start: null , end: null })
     setInputs(initialFilterPrameter)
-    navigate({
-      pathname: '/trips',
-      search: `?${createSearchParams({})}`
-    })
+    filterHandler()
   }
 
   return(
