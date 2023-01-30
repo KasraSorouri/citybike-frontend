@@ -65,7 +65,7 @@ const StationInfo = (id) => {
   const Origins = () => {
     return(
       <div>
-        <TableContainer>
+        <TableContainer data-testid='originTable'>
           <Table>
             <TableHead>
               <TableRow>
@@ -114,7 +114,7 @@ const StationInfo = (id) => {
   const Destinations = () => {
     return(
       <div>
-        <TableContainer>
+        <TableContainer data-testid='destinationTable'>
           <Table>
             <TableHead>
               <TableRow>
@@ -163,7 +163,7 @@ const StationInfo = (id) => {
   const BrifStation = () => {
     return(
       <div>
-        <TableContainer>
+        <TableContainer data-testid='stationTable'>
           <Table>
             <TableHead>
               <TableRow>
@@ -197,30 +197,30 @@ const StationInfo = (id) => {
                   {stationData.totalTripToStation}
                 </TableCell>
               </TableRow>
-              <TableRow>
-                <TableCell align='left'  variant="head" >
-                  Total round trip by this station
-                </TableCell>
-                <TableCell align='center' variant="head">
-                  {stationData.returnTrip[0].count}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align='left'  variant="head" >
-                  Avarage distance of round Trips
-                </TableCell>
-                <TableCell align='center' variant="head">
-                  {((stationData.returnTrip[0].distance)/1000).toFixed(1)} (km)
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align='left'  variant="head" >
-                  Avarage duration of round Trips
-                </TableCell>
-                <TableCell align='center' variant="head">
-                  {((stationData.returnTrip[0].duration)/60).toFixed(1)} (min)
-                </TableCell>
-              </TableRow>
+              {(stationData.returnTrip[0]) ?
+                (<><TableRow>
+                  <TableCell align='left' variant="head">
+                    Total round trip by this station
+                  </TableCell>
+                  <TableCell align='center' variant="head">
+                    {stationData.returnTrip[0].count}
+                  </TableCell>
+                </TableRow><TableRow>
+                  <TableCell align='left' variant="head">
+                      Avarage distance of round Trips
+                  </TableCell>
+                  <TableCell align='center' variant="head">
+                    {((stationData.returnTrip[0].distance) / 1000).toFixed(1)} (km)
+                  </TableCell>
+                </TableRow><TableRow>
+                  <TableCell align='left' variant="head">
+                      Avarage duration of round Trips
+                  </TableCell>
+                  <TableCell align='center' variant="head">
+                    {((stationData.returnTrip[0].duration) / 60).toFixed(1)} (min)
+                  </TableCell>
+                </TableRow></>
+                ) : null }
             </TableBody>
           </Table>
         </TableContainer>
@@ -311,7 +311,7 @@ const StationInfo = (id) => {
           </Grid>
           <br />
           <Map height={350} defaultCenter={[60.22,24.82]} defaultZoom={10}>
-            <Marker width={30} anchor={[station.location.latitude, station.location.longtitude]} color='red' value='test' ></Marker>
+            <Marker width={30} anchor={[station.location.latitude, station.location.longtitude]} color='red' value='test'></Marker>
             <ZoomControl />
           </Map>
         </Grid>

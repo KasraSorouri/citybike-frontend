@@ -195,8 +195,8 @@ const TripFilter = ({ filterHandler }) => {
           </Grid>
           <Grid>
             <Stack spacing={3} flex >
-              <Button variant='contained' size='large' sx={{ mt: 1, height:50 }}  onClick={handleSubmit}>Filter</Button>
-              <Button variant='contained' size='large' sx={{ mt: 1, height:50 }}  onClick={handleReset}>Reset</Button>
+              <Button data-testid="filterButton" variant='contained' size='large' sx={{ mt: 1, height:50 }}  onClick={handleSubmit}>Filter</Button>
+              <Button data-testid="resetButton" variant='contained' size='large' sx={{ mt: 1, height:50 }}  onClick={handleReset}>Reset</Button>
             </Stack>
           </Grid>
         </Grid>
