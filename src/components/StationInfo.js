@@ -66,7 +66,7 @@ const StationInfo = (id) => {
     return(
       <div>
         <TableContainer data-testid='originTable'>
-          <Table>
+          <Table size='small'>
             <TableHead>
               <TableRow>
                 <TableCell align='center' colSpan={4} >
@@ -115,7 +115,7 @@ const StationInfo = (id) => {
     return(
       <div>
         <TableContainer data-testid='destinationTable'>
-          <Table>
+          <Table size='small'>
             <TableHead>
               <TableRow>
                 <TableCell align='center' colSpan={4} >
@@ -164,7 +164,7 @@ const StationInfo = (id) => {
     return(
       <div>
         <TableContainer data-testid='stationTable'>
-          <Table>
+          <Table size='small' >
             <TableHead>
               <TableRow>
                 <TableCell align='center' colSpan={2} variant="head" >
@@ -195,6 +195,22 @@ const StationInfo = (id) => {
                 </TableCell>
                 <TableCell align='center' variant="head">
                   {stationData.totalTripToStation}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align='left'  variant="head" >
+                The average distance of trips starting from this station
+                </TableCell>
+                <TableCell align='center' variant="head">
+                  {((stationData.avrageTripFromStation)/1000).toFixed(1)}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align='left'  variant="head" >
+                The average distance of trips starting to this station
+                </TableCell>
+                <TableCell align='center' variant="head">
+                  {((stationData.avrageTripToStation)/1000).toFixed(1)}
                 </TableCell>
               </TableRow>
               {(stationData.returnTrip[0]) ?
