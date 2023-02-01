@@ -7,9 +7,9 @@ const getStations = async() => {
   return response.data
 }
 
-const getStationInfo = async(stationId) => {
+const getStationInfo = async(stationId, filterData) => {
   try {
-    const response = await axios.get(`${baseUri}/${stationId}`)
+    const response = await axios.get(`${baseUri}/${stationId}?${filterData}`)
     return response.data
   } catch (e){
     console.log('error:', e.message)

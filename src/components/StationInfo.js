@@ -3,7 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Map, Marker, ZoomControl  } from 'pigeon-maps'
 import { initialize } from '../reducers/stationReducer'
-import stationServices from '../servises/stationServices'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { createSearchParams } from 'react-router-dom'
 
 import { styled } from '@mui/material/styles'
 import MuiGrid from '@mui/material/Grid'
@@ -20,6 +23,9 @@ import {
   TableHead,
   TableRow } from '@mui/material'
 
+import stationServices from '../servises/stationServices'
+import parameterServise from '../servises/parameter'
+
 const StationInfo = (id) => {
   const sid = useParams(id).sid
 
@@ -27,11 +33,14 @@ const StationInfo = (id) => {
   const navigate = useNavigate()
 
   const [stationData, setStationData] = useState(null)
+  const [parameter, setParameter]= useState([])
+  const [dates, setDates] = useState({ start: null , end: null })
 
   const station = useSelector(state => state.station.find(station => station.id === sid))
   const stations = useSelector(state => state.station)
   const stationList = stations.map(station => `${station.nameFinnish},${station.stationId}`)
 
+  /*
   useEffect(() => {
     dispatch(initialize())
     if (station) {
@@ -39,13 +48,26 @@ const StationInfo = (id) => {
         .then((response) => setStationData(response))
     }
   },[sid])
-
+  */
+  const filter = {
+    'start': dates.start ? dates.start.toISOString() : 'null' ,
+    'end': dates.end ? dates.end.toISOString() : 'null'
+  }
+  let filterData = `${createSearchParams(filter)}`
+  console.log('filterdata ->', filterData)
   useEffect(() =>  {
     if (station) {
-      stationServices.getStationInfo(station.stationId)
+      stationServices.getStationInfo(station.stationId, filterData)
         .then((response) => setStationData(response))
     }
-  },[station])
+  },[station, dates])
+
+
+  useEffect(() =>  {
+    parameterServise.getParameter()
+      .then((response) => setParameter(response))
+    dispatch(initialize())
+  },[])
 
   const Grid = styled(MuiGrid)(({ theme }) => ({
     width: '100%',
@@ -250,9 +272,16 @@ const StationInfo = (id) => {
     navigate(`/station/${sid}`)
   }
 
+  const handleStartDate = (value) => {
+    setDates(values => ({ ...values, 'start': value }))
+  }
+  const handleEndDate = (value) => {
+    setDates(values => ({ ...values, 'end': value }))
+  }
+
   const SearchStation = () => {
     return(
-      <Stack spacing={2} sx={{ width: 300 }}>
+      <Stack direction={'row'} spacing={2}>
         <Autocomplete
           freeSolo
           id='search'
@@ -266,6 +295,7 @@ const StationInfo = (id) => {
               <TextField
                 {...params}
                 label="Search input"
+                sx={{ width: '25ch' }}
                 InputProps={{
                   ...params.InputProps,
                   type: 'search',
@@ -273,6 +303,28 @@ const StationInfo = (id) => {
               />
             )}}
         />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label='Date from'
+            name='startDate'
+            minDate={parameter.earliest}
+            maxDate={parameter.latest}
+            value={dates.start}
+            onChange={handleStartDate}
+            renderInput={(params) => <TextField {...params} sx={{ maxWidth: 150 }}/>
+            }
+          />
+          <DatePicker
+            label='Date to'
+            name='EndDate'
+            minDate={parameter.earliest}
+            maxDate={parameter.latest}
+            value={dates.end}
+            onChange={handleEndDate}
+            renderInput={(params) => <TextField {...params}  sx={{ maxWidth: 150 }}/>
+            }
+          />
+        </LocalizationProvider>
 
       </Stack>
 
@@ -291,16 +343,11 @@ const StationInfo = (id) => {
 
   return(
     <Box>
-      <h1>Station information</h1>
-      <Grid container spacing={3}>
-        <Grid>
-          <h2>&nbsp; &nbsp; &nbsp; Station name: {station.nameFinnish} ({station.nameSwedish})</h2>
-        </Grid>
-        <Grid>
-          <SearchStation  />
-        </Grid>
-      </Grid>
-
+      <Stack direction={'row'} spacing={50} marginTop={2}>
+        <h1>Station information</h1>
+        <SearchStation  />
+      </Stack>
+      <h2>&nbsp; &nbsp; &nbsp; Station name: {station.nameFinnish} ({station.nameSwedish})</h2>
       <Grid container spacing={3}>
         <Grid item sm>
           <Origins />
