@@ -35,24 +35,20 @@ const StationInfo = (id) => {
   const [stationData, setStationData] = useState(null)
   const [parameter, setParameter]= useState([])
   const [dates, setDates] = useState({ start: null , end: null })
+  const [month, setMonth] = useState(null)
 
   const station = useSelector(state => state.station.find(station => station.id === sid))
   const stations = useSelector(state => state.station)
   const stationList = stations.map(station => `${station.nameFinnish},${station.stationId}`)
 
-  /*
-  useEffect(() => {
-    dispatch(initialize())
-    if (station) {
-      stationServices.getStationInfo(station.stationId)
-        .then((response) => setStationData(response))
-    }
-  },[sid])
-  */
+  const theDayAfter = new Date(dates.end)
+  theDayAfter.setDate(theDayAfter.getDate()+1)
+  console.log('day ->', theDayAfter)
   const filter = {
     'start': dates.start ? dates.start.toISOString() : 'null' ,
-    'end': dates.end ? dates.end.toISOString() : 'null'
+    'end': dates.end ? theDayAfter.toISOString() : 'null'
   }
+
   let filterData = `${createSearchParams(filter)}`
   console.log('filterdata ->', filterData)
   useEffect(() =>  {
@@ -274,14 +270,22 @@ const StationInfo = (id) => {
 
   const handleStartDate = (value) => {
     setDates(values => ({ ...values, 'start': value }))
+    setMonth(null)
   }
   const handleEndDate = (value) => {
     setDates(values => ({ ...values, 'end': value }))
+    setMonth(null)
+  }
+  const handleMonth = (value) => {
+    setMonth(value)
+    const y = value.getFullYear()
+    const m = value.getMonth()
+    setDates({ start: new Date(y,m) , end: new Date(y,m+1) })
   }
 
   const SearchStation = () => {
     return(
-      <Stack direction={'row'} spacing={2}>
+      <Stack direction={'row'} spacing={1}>
         <Autocomplete
           freeSolo
           id='search'
@@ -324,10 +328,23 @@ const StationInfo = (id) => {
             renderInput={(params) => <TextField {...params}  sx={{ maxWidth: 150 }}/>
             }
           />
+          <Divider orientation="vertical" variant='middle' flexItem={false} >
+            or
+          </Divider>
+          <DatePicker
+            label='Select Month'
+            name='Month'
+            minDate={parameter.earliest}
+            maxDate={parameter.latest}
+            openTo='year'
+            value={month}
+            views={['year','month']}
+            onChange={handleMonth}
+            renderInput={(params) => <TextField {...params}  sx={{ maxWidth: 150 }}/>
+            }
+          />
         </LocalizationProvider>
-
       </Stack>
-
     )
   }
 
@@ -337,13 +354,12 @@ const StationInfo = (id) => {
         <p>The station not found! </p>
         <SearchStation />
       </div>
-
     )
   }
 
   return(
     <Box>
-      <Stack direction={'row'} spacing={50} marginTop={2}>
+      <Stack direction={'row'} spacing={50} marginTop={3}>
         <h1>Station information</h1>
         <SearchStation  />
       </Stack>
