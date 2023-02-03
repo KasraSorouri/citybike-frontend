@@ -34,10 +34,7 @@ const Stations = () => {
     setStationsToShow(stations.slice(firstStationIndex, LastStationIndex))
   }, [page, rowsPerPage, stations])
 
-
-  //console.log('station length', stations.length)
   const totalStations = stations ? stations.length : 0
-
 
   const columnHeader = [
     { id: 'stationId', lable: 'Station ID', minWidth: 20 },

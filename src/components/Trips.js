@@ -134,7 +134,7 @@ const TripfilterPage = () => {
             <TableBody>
               { trips.map((trip) => {
                 return(
-                  <TableRow hover role='checkbox' tabIndex={-1} key={trip.id} onClick={() => console.log('roe clicked ->',trip.id) } >
+                  <TableRow hover role='checkbox' tabIndex={-1} key={trip.id}>
                     <TableCell align='left' >
                       {trip.departureStationName}({trip.departureStationId})
                     </TableCell>

@@ -1,30 +1,28 @@
 import axios from 'axios'
 
-const baseUri = 'http://localhost:3005/api/files'
+const baseUri = '/api/files'
 
-const uploadTrips = async(file,dublicationCheck) => {
+const uploadTrips = async(file,duplicateCheck) => {
   const formData = new FormData()
   formData.append(
     'csvFile',
     file,
     file.name
   )
-  formData.append('dublicateCheck', dublicationCheck)
+  formData.append('duplicateCheck', duplicateCheck)
   const response = await axios.post(`${baseUri}/trip`, formData)
-  console.log('response ->', response.data)
   return response.data
 }
 
-const uploadStations = async(file,dublicationCheck) => {
+const uploadStations = async(file,duplicateCheck) => {
   const formData = new FormData()
   formData.append(
     'csvFile',
     file,
     file.name
   )
-  formData.append('dublicateCheck', dublicationCheck)
+  formData.append('duplicateCheck', duplicateCheck)
   const response = await axios.post(`${baseUri}/station`,formData)
-  console.log('response ->', response.data)
   return response.data
 }
 

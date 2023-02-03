@@ -4,7 +4,9 @@ import UploadResults from './UploadResults'
 import {
   Button,
   ToggleButton,
-  ToggleButtonGroup
+  ToggleButtonGroup,
+  Stack,
+  Box
 }from '@mui/material'
 
 
@@ -12,17 +14,16 @@ const FileUpload = () => {
   const [file, setFile] = useState(null)
   const [result, setResult] = useState(null)
   const [fileSelect, setFileSelect] = useState('trips')
-  const [dublicationCheck, setDublicationCheck] = useState('true')
+  const [duplicationCheck, setDuplicationCheck] = useState('true')
   const inputRef = useRef(null)
 
   const tripChangeHandler = (event) => {
-    console.log('event ->', event.target.files[0])
     setFile(event.target.files)
     setResult(null)
   }
 
   const tripUploadHandler = async() => {
-    const response = await fileService.uploadTrips(file[0],dublicationCheck)
+    const response = await fileService.uploadTrips(file[0],duplicationCheck)
     inputRef.current.value = null
     if (response) {
       setFile(null)
@@ -31,13 +32,12 @@ const FileUpload = () => {
   }
 
   const stationChangeHandler = (event) => {
-    console.log('event ->', event.target.files[0],dublicationCheck)
     setFile(event.target.files)
     setResult(null)
   }
 
   const stationUploadHandler = async() => {
-    const response = await fileService.uploadStations(file[0], dublicationCheck)
+    const response = await fileService.uploadStations(file[0], duplicationCheck)
     if (response) {
       setFile(null)
       inputRef.current.value = null
@@ -48,10 +48,11 @@ const FileUpload = () => {
 
   const toggleHandleChange = (event, newSelection) => {
     setFileSelect(newSelection)
+    setFile(null)
   }
 
-  const dublicationToggleHandleChange = (event, newSelection) => {
-    setDublicationCheck(newSelection)
+  const duplicationToggleHandleChange = (event, newSelection) => {
+    setDuplicationCheck(newSelection)
   }
 
   const UploadTrips = () => {
@@ -70,21 +71,24 @@ const FileUpload = () => {
           borderRadius:5,
           padding: 6,
           paddingRight:80
-        }}> Click to Upload csv file for Trips</label>
-        <p>recoed check for dublication?
-          <ToggleButtonGroup
-            color="primary"
-            value={dublicationCheck}
-            exclusive
-            onChange={dublicationToggleHandleChange}
-            aria-label="Platform"
-          >
-            <ToggleButton value='true' >Check</ToggleButton>
-            <ToggleButton value='false'>No</ToggleButton>
-          </ToggleButtonGroup>
-        </p>
+        }}>{ file ? file[0].name : 'Click to Upload csv file for Trips' }</label>
+        <Box sx={{ marginTop: 3 }}>
+          <Stack direction={'row'} spacing={5}>
+            <h3>recoed check for dublication?</h3>
+            <ToggleButtonGroup
+              color="primary"
+              value={duplicationCheck}
+              exclusive
+              onChange={duplicationToggleHandleChange}
+              aria-label="Platform"
+            >
+              <ToggleButton value='true' >Check</ToggleButton>
+              <ToggleButton value='false'>No</ToggleButton>
+            </ToggleButtonGroup>
+          </Stack>
+        </Box>
         <Button onClick={tripUploadHandler} variant="contained" >
-        Upload
+          Upload
         </Button>
         <br/>
       </div>
@@ -107,23 +111,26 @@ const FileUpload = () => {
           borderRadius:5,
           padding: 6,
           paddingRight:60
-        }}> Click to Upload csv file for Statoins</label>
-        <p>recoed check for dublication?
-          <ToggleButtonGroup
-            color="primary"
-            value={dublicationCheck}
-            exclusive
-            onChange={dublicationToggleHandleChange}
-            aria-label="Platform"
-          >
-            <ToggleButton value='true' >Check</ToggleButton>
-            <ToggleButton value='false'>No</ToggleButton>
-          </ToggleButtonGroup>
-        </p>
+        }}> { file ? file[0].name : 'Click to Upload csv file for Statoins' }
+        </label>
+        <Box sx={{ marginTop: 3 }}>
+          <Stack direction={'row'} spacing={5}>
+            <h3>recoed check for dublication?</h3>
+            <ToggleButtonGroup
+              color="primary"
+              value={duplicationCheck}
+              exclusive
+              onChange={duplicationToggleHandleChange}
+              aria-label="Platform"
+            >
+              <ToggleButton value='true' >Check</ToggleButton>
+              <ToggleButton value='false'>No</ToggleButton>
+            </ToggleButtonGroup>
+          </Stack>
+        </Box>
         <Button onClick={stationUploadHandler} variant="contained" >
         Upload
         </Button>
-        <UploadResults result={result} />
       </div>
     )
   }
@@ -143,6 +150,7 @@ const FileUpload = () => {
       </ToggleButtonGroup>
       <br />
       { fileSelect === 'stations' ? <UploadStations /> : <UploadTrips /> }
+      <UploadResults result={result} />
     </div>
   )
 

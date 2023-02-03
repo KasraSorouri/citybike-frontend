@@ -8,6 +8,9 @@ const Navigation = () => {
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="menu">
         </IconButton>
+        <Button color="inherit" component={Link} to='/'>
+          About App
+        </Button>
         <Button color="inherit" component={Link} to='/trips'>
           Trips
         </Button>

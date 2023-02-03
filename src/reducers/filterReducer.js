@@ -46,6 +46,9 @@ export const setFilter = (filter) => {
   params.distanceFrom = filter.distanceFrom ? filter.distanceFrom : 'null'
   params.distanceTo = filter.distanceTo ? filter.distanceTo : 'null'
   params.start = filter.start ? filter.start.toISOString() : 'null'
+
+  //Given that the beginning of the day is taken into account when selecting the day.
+  //we will add one day to it so that it can be considered in the filter.
   const theDayAfter = new Date(filter.end)
   theDayAfter.setDate(theDayAfter.getDate()+1)
   params.end = filter.end ? theDayAfter.toISOString() : 'null'

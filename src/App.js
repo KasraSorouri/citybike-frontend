@@ -5,7 +5,6 @@ import {
   Route
 } from 'react-router-dom'
 import Stations from './components/Stations'
-//import Trips from './components/Trips'
 import Navigation from './components/Navigation'
 import StationInfo from './components/StationInfo'
 import FileUpload from './components/FileUpload'
@@ -30,7 +29,6 @@ function App() {
         </Router>
       </Container>
     </div>
-
   )
 }
 

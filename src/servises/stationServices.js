@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUri = 'http://localhost:3005/api/stations'
+const baseUri = '/api/stations'
 
 const getStations = async() => {
   const response = await axios.get(baseUri)

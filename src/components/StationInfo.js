@@ -41,16 +41,16 @@ const StationInfo = (id) => {
   const stations = useSelector(state => state.station)
   const stationList = stations.map(station => `${station.nameFinnish},${station.stationId}`)
 
+  //Given that the beginning of the day is taken into account when selecting the day.
+  //we will add one day to it so that it can be considered in the filter.
   const theDayAfter = new Date(dates.end)
   theDayAfter.setDate(theDayAfter.getDate()+1)
-  console.log('day ->', theDayAfter)
   const filter = {
     'start': dates.start ? dates.start.toISOString() : 'null' ,
     'end': dates.end ? theDayAfter.toISOString() : 'null'
   }
 
   let filterData = `${createSearchParams(filter)}`
-  console.log('filterdata ->', filterData)
   useEffect(() =>  {
     if (station) {
       stationServices.getStationInfo(station.stationId, filterData)
@@ -351,7 +351,6 @@ const StationInfo = (id) => {
   if (!(stationData && station)) {
     return(
       <div>
-        <p>The station not found! </p>
         <SearchStation />
       </div>
     )
